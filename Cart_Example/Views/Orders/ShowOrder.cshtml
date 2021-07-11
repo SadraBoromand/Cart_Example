@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Cart_Example.Models.ViewModels.ShowOrderViewModel>
+@{
+    ViewData["Title"] = "ShowOrder";
+    int row = 0;
+}
+
+<h1>نمایش فاکتور</h1>
+<hr />
+
+<table class="table table-bordered text-center">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">تصویر</th>
+        <th scope="col">عنوان</th>
+        <th scope="col">تعداد</th>
+        <th scope="col">قیمت</th>
+        <th scope="col">جمع</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th scope="row">@(++row)</th>
+            <td>
+                <img src="/Images/@item.ImageName" class="img-thumbnail" style="max-width: 150px" alt="@item.ImageName" />
+            </td>
+            <td>@item.Title</td>
+            <td>@item.Count</td>
+            <td>@item.price</td>
+            <td>@item.Sum</td>
+            <td>
+                <a class="btn btn-sm rounded-circle px-3 btn-success" href="/Orders/Command/@item.OrderDetailId?command=up">+</a>
+                <a class="btn btn-sm rounded-circle px-3 btn-warning" href="/Orders/Command/@item.OrderDetailId?command=down">-</a>
+                <a class="btn btn-sm btn-outline-danger px-4 rounded-pill" asp-action="Delete" asp-controller="Orders" asp-route-id="@item.OrderDetailId">
+                    حذف
+                </a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td colspan="5" class="text-left">
+            جمع کل : 
+        </td>
+        <td colspan="2">
+            @Model.Sum(s=>s.Sum).ToString("#,0 تومان")
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5" class="text-left">
+        </td>
+        <td colspan="2">
+            <a class="btn btn-primary text-white btn-block">
+                تایید و پرداخت نهایی
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
